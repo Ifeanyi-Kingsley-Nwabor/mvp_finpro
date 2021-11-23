@@ -25,8 +25,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(helmet());
 app.use(cors())
 
-app.use('/api/services', servicesRouter);
-app.use('/api/users', usersRouter);
+app.use('/services', servicesRouter);
+app.use('/users', usersRouter);
 
 app.get('/', (req, res, next) => {
   res.json('welcome to mvp_finpro')
