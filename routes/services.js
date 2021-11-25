@@ -8,7 +8,7 @@ var servicesRouter = express.Router();
 // });
 
 servicesRouter.get("/", (req, res, next) => {
-  db.query(`SELECT * FROM services ORDER BY id ASC`)
+  db.query(`SELECT * FROM services JOIN users ON users.id = services.user_id ORDER BY services.id ASC`)
     .then((data) => res.json(data.rows))
     .catch(next);
 });
