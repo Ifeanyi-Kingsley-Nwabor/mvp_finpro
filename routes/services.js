@@ -20,7 +20,7 @@ servicesRouter.get('/:id', ( req, res, next) => {
       values: [id],
   }
   db.query(service)
-  .then((data) => res.status(200).json(data.rows))
+  .then((data) => res.status(200).json(data))
   .catch(next);
 });
 servicesRouter.post('/', (req, res, next) => {
