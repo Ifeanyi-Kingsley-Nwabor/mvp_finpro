@@ -1,5 +1,5 @@
-var express = require('express');
-const db = require('../database/db');
+var express = require("express");
+const db = require("../database/db");
 var servicesRouter = express.Router();
 
 /* GET home page. */
@@ -7,74 +7,76 @@ var servicesRouter = express.Router();
 //   res.render('index', { title: 'Express' });
 // });
 
-servicesRouter.get('/', (req, res, next) => {
+servicesRouter.get("/", (req, res, next) => {
   db.query(`SELECT * FROM services ORDER BY id ASC`)
-  .then((data) => res.json(data.rows))
-  .catch(next);
+    .then((data) => res.json(data.rows))
+    .catch(next);
 });
 
-servicesRouter.get('/:id', ( req, res, next) => {
-  const {id} = req.params;
-  const service = { 
-      text : "SELECT * FROM services WHERE id = $1",
-      values: [id],
-  }
+servicesRouter.get("/:id", (req, res, next) => {
+  const { id } = req.params;
+  const service = {
+    text: "SELECT * FROM services WHERE id = $1",
+    values: [id],
+  };
   db.query(service)
-  .then((data) => res.status(200).json(data))
-  .catch(next);
+    .then((data) => res.status(200).json(data.rows[0]))
+    .catch(next);
 });
-servicesRouter.post('/', (req, res, next) => {
+servicesRouter.post("/", (req, res, next) => {
   const { user_id, title, image, category, price, description } = req.body;
 
   const newService = {
-      text: `INSERT INTO services (user_id, title, image, category, price, description)
+    text: `INSERT INTO services (user_id, title, image, category, price, description)
       VALUES($1,$2,$3,$4,$5,$6)
       RETURNING *
       `,
-      values: [user_id, title, image, category, price, description],
-  }
+    values: [user_id, title, image, category, price, description],
+  };
   db.query(newService)
-  .then((data) => res.status(201).json(data.rows))
-  .catch(next);
-})
+    .then((data) => res.status(201).json(data.rows))
+    .catch(next);
+});
 
-servicesRouter.put('/:id', (req, res, next) => {
+servicesRouter.put("/:id", (req, res, next) => {
   const { user_id, title, image, category, price, description } = req.body;
-  const {id} = req.params;
+  const { id } = req.params;
   const updateService = {
-      text: `
+    text: `
       UPDATE services
       SET user_id=$1, title=$2, image=$3, category=$4, price=$5, description=$6
       WHERE id=$7
       RETURNING *
       `,
-      values:[user_id, title, image, category, price, description, id]
-  }
+    values: [user_id, title, image, category, price, description, id],
+  };
   db.query(updateService)
-  .then((data) => res.status(201).json(data.rows))
-  .catch(next);
-})
+    .then((data) => res.status(201).json(data.rows))
+    .catch(next);
+});
 
-servicesRouter.delete('/:id', (req, res, next) => {
-  const {id} = req.params;
+servicesRouter.delete("/:id", (req, res, next) => {
+  const { id } = req.params;
   const deleteService = {
-      text:`
+    text: `
       DELETE FROM services
       WHERE id=$1
       RETURNING *`,
-      values: [id],
-  }
+    values: [id],
+  };
   db.query(deleteService)
-  .then((data) => {
-      if(!data.rows.length) {
-          res.status(404).send(`The requested service does not exist!! Please checkout our latest available services.`)
+    .then((data) => {
+      if (!data.rows.length) {
+        res
+          .status(404)
+          .send(
+            `The requested service does not exist!! Please checkout our latest available services.`
+          );
       } else {
-          res.status(200).json(data.rows)
+        res.status(200).json(data.rows);
       }
-  })
-  .catch(next);
+    })
+    .catch(next);
 });
-
-
 
 module.exports = servicesRouter;
