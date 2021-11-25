@@ -8,7 +8,7 @@ var servicesRouter = express.Router();
 // });
 
 servicesRouter.get("/", (req, res, next) => {
-  db.query(`SELECT * FROM services JOIN users ON users.id = services.user_id ORDER BY services.id ASC`)
+  db.query(`SELECT * FROM services ORDER BY id ASC`)
     .then((data) => res.json(data.rows))
     .catch(next);
 });
@@ -23,6 +23,73 @@ servicesRouter.get("/:id", (req, res, next) => {
     .then((data) => res.status(200).json(data.rows[0]))
     .catch(next);
 });
+
+servicesRouter.get("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const servicesAndUsers = {
+    text: `
+    SELECT
+    s.id,
+    s.user_id,
+    s.title,
+    s.image,
+    s.category,
+    s.price,
+    s.description,
+    u.first_name,
+    u.last_name,
+    u.image_user,
+    u.business_name,
+    u.country,
+    u.about
+    FROM services s
+    JOIN users u
+    ON u.id = s.user_id
+    WHERE s.id = $1
+    `,
+    values: [id],
+  };
+
+  const serviceReviews = {
+    text:`
+    SELECT
+      r.id,
+      r.service_id,
+      r.text,
+      r.user_id,
+      r.date,
+      r.rating
+    FROM reviews r
+    JOIN services s
+    ON r.service_id = s.id
+    WHERE s.id = $1
+    `,
+    values: [id],
+  };
+  try {
+    const { rows: servicesAndUsersData } = await db.query(
+      servicesAndUsers
+    );
+    const { rows: reviewsData} = await db.query(serviceReviews);
+
+    const result = {
+      ...servicesAndUsersData['0'],
+      reviews: reviewsData,
+    };
+    res.json(result);
+  } catch (e) {
+    res.status(500).send(e.message);
+  }
+});
+//first_name, 
+// last_name, 
+// image_user, 
+// type, 
+// business_name,
+//  email, password, 
+//  phone_number, 
+//  address, city, state, country, about, 
+// id
 servicesRouter.post("/", (req, res, next) => {
   const { user_id, title, image, category, price, description } = req.body;
 
