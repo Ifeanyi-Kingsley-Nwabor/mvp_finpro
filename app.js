@@ -11,6 +11,7 @@ const cors = require('cors')
 
 const servicesRouter = require('./routes/services');
 const usersRouter = require('./routes/users');
+const ordersRouter = require('./routes/orders')
 
 
 // view engine setup
@@ -27,6 +28,7 @@ app.use(cors())
 
 app.use('/services', servicesRouter);
 app.use('/users', usersRouter);
+app.use('/orders', ordersRouter)
 
 app.get('/', (req, res, next) => {
   res.json('welcome to mvp_finpro')

@@ -1,6 +1,6 @@
-var express = require("express");
+const express = require("express");
 const db = require("../database/db");
-var servicesRouter = express.Router();
+const servicesRouter = express.Router();
 
 /* GET home page. */
 // servicesRouter.get('/', (req, res, next) =>{
@@ -136,9 +136,7 @@ servicesRouter.delete("/:id", (req, res, next) => {
       if (!data.rows.length) {
         res
           .status(404)
-          .send(
-            `The requested service does not exist!! Please checkout our latest available services.`
-          );
+          .send(`Invalid request.`);
       } else {
         res.status(200).json(data.rows);
       }
