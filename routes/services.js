@@ -13,16 +13,16 @@ servicesRouter.get("/", (req, res, next) => {
     .catch(next);
 });
 
-servicesRouter.get("/:id", (req, res, next) => {
-  const { id } = req.params;
-  const service = {
-    text: "SELECT * FROM services WHERE id = $1",
-    values: [id],
-  };
-  db.query(service)
-    .then((data) => res.status(200).json(data.rows[0]))
-    .catch(next);
-});
+// servicesRouter.get("/:id", (req, res, next) => {
+//   const { id } = req.params;
+//   const service = {
+//     text: "SELECT * FROM services WHERE id = $1",
+//     values: [id],
+//   };
+//   db.query(service)
+//     .then((data) => res.status(200).json(data.rows[0]))
+//     .catch(next);
+// });
 
 servicesRouter.get("/:id", async (req, res, next) => {
   const { id } = req.params;
