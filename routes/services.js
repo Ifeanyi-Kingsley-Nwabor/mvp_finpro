@@ -2,7 +2,7 @@ const express = require("express");
 const db = require("../database/db");
 const servicesRouter = express.Router();
 
-/* GET home page. */ Similar;
+/* GET home page. Similar;*/
 // servicesRouter.get('/', (req, res, next) =>{
 //   res.render('index', { title: 'Express' });
 // });
