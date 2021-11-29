@@ -7,8 +7,8 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-const webhookSecret = require("stripe")(process.env.STRIPE_WEBHOOK_SECRET);
+// const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+// const webhookSecret = require("stripe")(process.env.STRIPE_WEBHOOK_SECRET);
 
 const servicesRouter = require("./routes/services");
 const usersRouter = require("./routes/users");
@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(process.env.STATIC_DIR));
+// app.use(express.static(process.env.STATIC_DIR));
 
 app.use(helmet());
 app.use(cors());
