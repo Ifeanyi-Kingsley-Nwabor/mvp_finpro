@@ -2,7 +2,7 @@ const express = require("express");
 const db = require("../database/db");
 const servicesRouter = express.Router();
 
-/* GET home page. */
+/* GET home page. */ Similar;
 // servicesRouter.get('/', (req, res, next) =>{
 //   res.render('index', { title: 'Express' });
 // });
@@ -51,7 +51,7 @@ servicesRouter.get("/:id", async (req, res, next) => {
   };
 
   const serviceReviews = {
-    text:`
+    text: `
     SELECT
       r.id,
       r.service_id,
@@ -67,13 +67,11 @@ servicesRouter.get("/:id", async (req, res, next) => {
     values: [id],
   };
   try {
-    const { rows: servicesAndUsersData } = await db.query(
-      servicesAndUsers
-    );
-    const { rows: reviewsData} = await db.query(serviceReviews);
+    const { rows: servicesAndUsersData } = await db.query(servicesAndUsers);
+    const { rows: reviewsData } = await db.query(serviceReviews);
 
     const result = {
-      ...servicesAndUsersData['0'],
+      ...servicesAndUsersData["0"],
       reviews: reviewsData,
     };
     res.json(result);
@@ -81,14 +79,14 @@ servicesRouter.get("/:id", async (req, res, next) => {
     res.status(500).send(e.message);
   }
 });
-//first_name, 
-// last_name, 
-// image_user, 
-// type, 
+//first_name,
+// last_name,
+// image_user,
+// type,
 // business_name,
-//  email, password, 
-//  phone_number, 
-//  address, city, state, country, about, 
+//  email, password,
+//  phone_number,
+//  address, city, state, country, about,
 // id
 servicesRouter.post("/", (req, res, next) => {
   const { user_id, title, image, category, price, description } = req.body;
@@ -101,6 +99,22 @@ servicesRouter.post("/", (req, res, next) => {
     values: [user_id, title, image, category, price, description],
   };
   db.query(newService)
+    .then((data) => res.status(201).json(data.rows))
+    .catch(next);
+});
+
+servicesRouter.get("/similar/:id/:category", (req, res, next) => {
+  const { id, category } = req.params;
+  const getSimilarServicesQuery = {
+    text: `
+    SELECT * FROM services
+    WHERE category = $1
+    AND id != $2
+    `,
+    values: [category, id],
+  };
+
+  db.query(getSimilarServicesQuery)
     .then((data) => res.status(201).json(data.rows))
     .catch(next);
 });
@@ -134,9 +148,7 @@ servicesRouter.delete("/:id", (req, res, next) => {
   db.query(deleteService)
     .then((data) => {
       if (!data.rows.length) {
-        res
-          .status(404)
-          .send(`Invalid request.`);
+        res.status(404).send(`Invalid request.`);
       } else {
         res.status(200).json(data.rows);
       }
