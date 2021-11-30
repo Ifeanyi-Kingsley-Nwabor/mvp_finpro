@@ -2,7 +2,8 @@ const express = require("express");
 const db = require("../database/db");
 const servicesRouter = express.Router();
 
-/* GET home page. Similar;*/
+/* GET home page. */
+
 // servicesRouter.get('/', (req, res, next) =>{
 //   res.render('index', { title: 'Express' });
 // });
@@ -99,22 +100,6 @@ servicesRouter.post("/", (req, res, next) => {
     values: [user_id, title, image, category, price, description],
   };
   db.query(newService)
-    .then((data) => res.status(201).json(data.rows))
-    .catch(next);
-});
-
-servicesRouter.get("/similar/:id/:category", (req, res, next) => {
-  const { id, category } = req.params;
-  const getSimilarServicesQuery = {
-    text: `
-    SELECT * FROM services
-    WHERE category = $1
-    AND id != $2
-    `,
-    values: [category, id],
-  };
-
-  db.query(getSimilarServicesQuery)
     .then((data) => res.status(201).json(data.rows))
     .catch(next);
 });
