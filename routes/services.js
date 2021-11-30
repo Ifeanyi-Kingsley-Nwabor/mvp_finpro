@@ -121,9 +121,9 @@ servicesRouter.put("/:id", (req, res, next) => {
     .catch(next);
 });
 
-servicesRouter.get("/similar/:id/:category", (req, res, next) => {
+servicesRouter.get("/related/:id/:category", (req, res, next) => {
   const { id, category } = req.params;
-  const getSimilarServicesQuery = {
+  const getRelatedServicesQuery = {
     text: `
     SELECT * FROM services
     WHERE category = $1
@@ -132,7 +132,7 @@ servicesRouter.get("/similar/:id/:category", (req, res, next) => {
     values: [category, id],
   };
 
-  db.query(getSimilarServicesQuery)
+  db.query(getRelatedServicesQuery)
     .then((data) => res.status(201).json(data.rows))
     .catch(next);
 });
