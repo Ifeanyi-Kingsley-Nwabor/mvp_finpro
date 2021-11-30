@@ -11,3 +11,5 @@ const validator = require("validator");
 checkoutRouter.get("/", (req, res, next) => {
   res.json();
 });
+
+module.exports = checkoutRouter;

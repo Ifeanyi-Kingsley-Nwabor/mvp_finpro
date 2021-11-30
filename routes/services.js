@@ -121,6 +121,22 @@ servicesRouter.put("/:id", (req, res, next) => {
     .catch(next);
 });
 
+servicesRouter.get("/similar/:id/:category", (req, res, next) => {
+  const { id, category } = req.params;
+  const getSimilarServicesQuery = {
+    text: `
+    SELECT * FROM services
+    WHERE category = $1
+    AND id != $2
+    `,
+    values: [category, id],
+  };
+
+  db.query(getSimilarServicesQuery)
+    .then((data) => res.status(201).json(data.rows))
+    .catch(next);
+});
+
 servicesRouter.delete("/:id", (req, res, next) => {
   const { id } = req.params;
   const deleteService = {
