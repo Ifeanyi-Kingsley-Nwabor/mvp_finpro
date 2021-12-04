@@ -8,13 +8,17 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const helmet = require("helmet");
-// const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripeSecretKey = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripePublicKey = require("stripe")(process.env.STRIPE_PUBLISHABLE_KEY);
 // const webhookSecret = require("stripe")(process.env.STRIPE_WEBHOOK_SECRET);
 
 const servicesRouter = require("./routes/services");
 const usersRouter = require("./routes/users");
 const ordersRouter = require("./routes/orders");
 const checkoutRouter = require("./routes/checkout");
+const webhookRouter = require("./routes/webhook_server");
+
+//console.log(stripeSecretKey, stripePublicKey);
 
 app.use(cors());
 app.use(logger("dev"));
@@ -30,6 +34,7 @@ app.use("/services", servicesRouter);
 app.use("/users", usersRouter);
 app.use("/orders", ordersRouter);
 app.use("/checkout", checkoutRouter);
+//app.use("/checkout", webhookRouter);
 
 app.get("/", (req, res, next) => {
   res.json("welcome to mvp_finpro");
