@@ -16,10 +16,11 @@ const contactEmail = nodemailer.createTransport({
 contactEmail.verify((error) => {
   if (error) {
     console.log(error);
-  } else {
-    console.log("Ready to Send");
-    // console.log(path.resolve(__dirname + "/something.txt"));
   }
+  // else {
+  //   console.log("Ready to Send");
+  //   // console.log(path.resolve(__dirname + "/something.txt"));
+  // }
 });
 
 contactRouter.post("/seller", (req, res) => {

@@ -7,7 +7,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 checkoutRouter.post("/create-payment-intent", async (req, res, next) => {
   const { currency, paymentMethodType, amount } = req.body;
-  console.log(currency, paymentMethodType);
+  // console.log(currency, paymentMethodType);
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
@@ -22,7 +22,7 @@ checkoutRouter.post("/create-payment-intent", async (req, res, next) => {
   }
 });
 
-checkoutRouter.get("/config", (req, res, next) => {
+checkoutRouter.get("/config", async (req, res, next) => {
   res.json({ publishableKey: process.env.STRIPE_PUBLISHABLE_KEY });
 });
 

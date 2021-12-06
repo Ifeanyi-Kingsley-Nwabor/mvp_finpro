@@ -9,7 +9,7 @@ const logger = require("morgan");
 const helmet = require("helmet");
 const stripeSecretKey = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const stripePublicKey = require("stripe")(process.env.STRIPE_PUBLISHABLE_KEY);
-// const webhookSecret = require("stripe")(process.env.STRIPE_WEBHOOK_SECRET);
+const webhookSecret = require("stripe")(process.env.STRIPE_WEBHOOK_SECRET);
 const loginRouter = require("./routes/login");
 const multer = require("multer");
 const fs = require("fs");
@@ -36,22 +36,8 @@ app.use("/services", servicesRouter);
 app.use("/users", usersRouter);
 app.use("/orders", ordersRouter);
 app.use("/checkout", checkoutRouter);
-//app.use("/checkout", webhookRouter);
+app.use("/payment", webhookRouter);
 app.use("/contact", upload.single("file"), contactRouter);
-
-// const multerValidation = (req, res, next) => {
-//   const { url, file, files, fileValidationError } = req;
-//   if (url === "/upload-profile-pic") {
-//     if (!file) return res.status(400).send("Please upload a file");
-//   }
-//   if (url === "/upload-cat-pics") {
-//     if (!files || !files.length)
-//       return res.status(400).send("Please upload some files");
-//   }
-//   if (fileValidationError) return res.status(400).send(fileValidationError);
-//   console.log({ data: req.file || req.files });
-//   next();
-// };
 
 app.get("/", (req, res, next) => {
   res.json("welcome to mvp_finpro");
