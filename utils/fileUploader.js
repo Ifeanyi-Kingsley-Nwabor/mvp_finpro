@@ -1,7 +1,7 @@
 const multer = require("multer");
 const path = require("path");
 
-const uploadFolder = path.resolve("public", "images/user_images");
+const uploadFolder = path.resolve("public", "emailAttachments");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

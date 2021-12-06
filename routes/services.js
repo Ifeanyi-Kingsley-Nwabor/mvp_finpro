@@ -42,7 +42,8 @@ servicesRouter.get("/:id", async (req, res, next) => {
     u.image_user,
     u.business_name,
     u.country,
-    u.about
+    u.about,
+    u.email
     FROM services s
     JOIN users u
     ON u.id = s.user_id

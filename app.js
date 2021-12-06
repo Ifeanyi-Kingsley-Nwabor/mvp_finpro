@@ -14,7 +14,7 @@ const loginRouter = require("./routes/login");
 const multer = require("multer");
 const fs = require("fs");
 const db = require("./database/db");
-const upload = require("./utils/imageUploader");
+const upload = require("./utils/fileUploader");
 
 const servicesRouter = require("./routes/services");
 const usersRouter = require("./routes/users");
@@ -37,7 +37,7 @@ app.use("/users", usersRouter);
 app.use("/orders", ordersRouter);
 app.use("/checkout", checkoutRouter);
 //app.use("/checkout", webhookRouter);
-app.use("/contact", contactRouter);
+app.use("/contact", upload.single("file"), contactRouter);
 
 // const multerValidation = (req, res, next) => {
 //   const { url, file, files, fileValidationError } = req;
