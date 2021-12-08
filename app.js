@@ -10,7 +10,7 @@ const helmet = require("helmet");
 const stripeSecretKey = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const stripePublicKey = require("stripe")(process.env.STRIPE_PUBLISHABLE_KEY);
 const webhookSecret = require("stripe")(process.env.STRIPE_WEBHOOK_SECRET);
-const loginRouter = require("./routes/login");
+
 const multer = require("multer");
 const fs = require("fs");
 const db = require("./database/db");
@@ -22,6 +22,8 @@ const ordersRouter = require("./routes/orders");
 const checkoutRouter = require("./routes/checkout");
 const contactRouter = require("./routes/contact");
 const webhookRouter = require("./routes/webhook_server");
+const authRouter = require("./routes/authJwt");
+const profileRouter = require("./routes/profilePage");
 
 app.use(cors());
 app.use(logger("dev"));
@@ -29,7 +31,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/jwt", loginRouter);
+
 app.use(helmet());
 
 app.use("/services", servicesRouter);
@@ -37,6 +39,9 @@ app.use("/users", usersRouter);
 app.use("/orders", ordersRouter);
 app.use("/checkout", checkoutRouter);
 app.use("/payment", webhookRouter);
+app.use("/auth", authRouter);
+app.use("/profile", profileRouter);
+
 app.use("/contact", upload.single("file"), contactRouter);
 
 app.get("/", (req, res, next) => {
