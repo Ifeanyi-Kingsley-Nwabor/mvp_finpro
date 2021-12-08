@@ -27,7 +27,17 @@ const profileRouter = require("./routes/profilePage");
 
 app.use(cors());
 app.use(logger("dev"));
-app.use(express.json());
+// app.use(express.json());
+
+app.use((req, res, next) => {
+  console.log(req.originalUrl);
+  if (req.originalUrl.startsWith("/payment/webhook")) {
+    next();
+  } else {
+    express.json()(req, res, next);
+  }
+});
+
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
