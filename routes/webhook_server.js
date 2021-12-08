@@ -3,6 +3,7 @@ const express = require("express");
 const webhookRouter = express.Router();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+const { contactEmail } = require("../routes/contact");
 
 webhookRouter.post(
   "/webhook",
@@ -34,6 +35,24 @@ webhookRouter.post(
         console.log(
           `🪙 [${event.id}] PaymentIntent (${paymentIntent.id}): ${paymentIntent.status} 🪙`
         );
+
+        const mail = {
+          from: "kinglsey",
+          to: "iamthebou@gmail.com",
+          subject: "Contact Form Submission",
+          html: `<p>Name: bla</p>
+                 <p>Email: bla</p>
+                 <p>Message: bla</p>`,
+        };
+
+        contactEmail.sendMail(mail, (error) => {
+          if (error) {
+            res.json({ status: "ERROR" });
+          } else {
+            res.json({ status: "Message Sent" });
+          }
+        });
+
         break;
 
       case "payment_intent.created":

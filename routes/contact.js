@@ -64,4 +64,4 @@ contactRouter.post("/seller", (req, res) => {
   });
 });
 
-module.exports = contactRouter;
+module.exports = { contactRouter, contactEmail };
