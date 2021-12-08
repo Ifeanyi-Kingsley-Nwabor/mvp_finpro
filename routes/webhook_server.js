@@ -30,7 +30,8 @@ webhookRouter.post(
       case "payment_intent.succeeded":
         paymentIntent = event.data.object;
 
-        console.log(request.body);
+        console.log(event.data);
+        console.log(paymentIntent);
 
         // Then define and call a function to handle the event payment_intent.succeeded
         //console.log("PaymentIntent Succeeded:", intent.id);
