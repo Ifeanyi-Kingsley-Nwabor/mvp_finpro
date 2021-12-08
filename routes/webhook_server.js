@@ -30,9 +30,6 @@ webhookRouter.post(
       case "payment_intent.succeeded":
         paymentIntent = event.data.object;
 
-        console.log(event.data);
-        console.log(paymentIntent);
-
         // Then define and call a function to handle the event payment_intent.succeeded
         //console.log("PaymentIntent Succeeded:", intent.id);
         console.log(
@@ -40,12 +37,12 @@ webhookRouter.post(
         );
 
         const mail = {
-          from: "kinglsey",
-          to: "iamthebou@gmail.com",
-          subject: "Contact Form Submission",
-          html: `<p>Name: bla</p>
-                 <p>Email: bla</p>
-                 <p>Message: bla</p>`,
+          from: "Customer",
+          to: "nwaborkingsley@gmail.com",
+          subject: "MVP FinPro - Payment Confirmation",
+          html: `<p>Name: Nwabor Kingsley</p>
+                 <p>Email: nwaborkingsley@gmail.com</p>
+                 <p>Message: Thank you for your payment, the service has been booked! Expect to hear from the seller soon.</p>`,
         };
 
         contactEmail.sendMail(mail, (error) => {
