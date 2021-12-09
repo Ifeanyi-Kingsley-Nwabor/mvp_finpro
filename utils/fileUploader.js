@@ -23,10 +23,14 @@ const isPicture = ({ originalname, mimetype }) => {
     "image/jpg",
     "image/jpeg",
     "image/gif",
+    "audio/mpeg",
+    "video/mp4,",
+    "application/pdf",
   ];
   return (
-    originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/) &&
-    allowedMimeTypes.includes(mimetype)
+    originalname.match(
+      /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF|mpeg|MPEG|mp4|MP4|pdf|PDF)$/
+    ) && allowedMimeTypes.includes(mimetype)
   );
 };
 

@@ -34,6 +34,9 @@ servicesRouter.get("/:id", async (req, res, next) => {
     s.user_id,
     s.title,
     s.image,
+    s.image_2,
+    s.image_3,
+    s.image_4,
     s.category,
     s.price,
     s.description,
@@ -91,14 +94,34 @@ servicesRouter.get("/:id", async (req, res, next) => {
 //  address, city, state, country, about,
 // id
 servicesRouter.post("/", (req, res, next) => {
-  const { user_id, title, image, category, price, description } = req.body;
+  const {
+    user_id,
+    title,
+    image,
+    image_2,
+    image_3,
+    image_4,
+    category,
+    price,
+    description,
+  } = req.body;
 
   const newService = {
-    text: `INSERT INTO services (user_id, title, image, category, price, description)
-      VALUES($1,$2,$3,$4,$5,$6)
+    text: `INSERT INTO services (user_id, title, image, image_2, image_3, image_4, category, price, description)
+      VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)
       RETURNING *
       `,
-    values: [user_id, title, image, category, price, description],
+    values: [
+      user_id,
+      title,
+      image,
+      image_2,
+      image_3,
+      image_4,
+      category,
+      price,
+      description,
+    ],
   };
   db.query(newService)
     .then((data) => res.status(201).json(data.rows))
@@ -106,16 +129,37 @@ servicesRouter.post("/", (req, res, next) => {
 });
 
 servicesRouter.put("/:id", (req, res, next) => {
-  const { user_id, title, image, category, price, description } = req.body;
+  const {
+    user_id,
+    title,
+    image,
+    image_2,
+    image_3,
+    image_4,
+    category,
+    price,
+    description,
+  } = req.body;
   const { id } = req.params;
   const updateService = {
     text: `
       UPDATE services
-      SET user_id=$1, title=$2, image=$3, category=$4, price=$5, description=$6
-      WHERE id=$7
+      SET user_id=$1, title=$2, image=$3, image_2=$4, image_3=$5, image_4=$6, category=$7, price=$8, description=$9
+      WHERE id=$10
       RETURNING *
       `,
-    values: [user_id, title, image, category, price, description, id],
+    values: [
+      user_id,
+      title,
+      image,
+      image_2,
+      image_3,
+      image_4,
+      category,
+      price,
+      description,
+      id,
+    ],
   };
   db.query(updateService)
     .then((data) => res.status(201).json(data.rows))
