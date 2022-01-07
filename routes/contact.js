@@ -4,12 +4,18 @@ const nodemailer = require("nodemailer");
 const contactRouter = express.Router();
 const path = require("path");
 const fs = require("fs");
+const user = process.env.NODE_MAILER_USER;
+const pass = process.env.NODE_MAILER_PASS;
 
 const contactEmail = nodemailer.createTransport({
   service: "gmail",
+  // auth: {
+  //   user: "mvp.finpro@gmail.com",
+  //   pass: "Mvpfinpro10",
+  // },
   auth: {
-    user: "mvp.finpro@gmail.com",
-    pass: "Mvpfinpro10",
+    user: user,
+    pass: pass,
   },
 });
 

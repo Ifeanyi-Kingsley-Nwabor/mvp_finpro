@@ -10,7 +10,7 @@ const helmet = require("helmet");
 const stripeSecretKey = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const stripePublicKey = require("stripe")(process.env.STRIPE_PUBLISHABLE_KEY);
 const webhookSecret = require("stripe")(process.env.STRIPE_WEBHOOK_SECRET);
-
+const bodyParser = require("body-parser");
 const multer = require("multer");
 const fs = require("fs");
 const db = require("./database/db");
@@ -28,6 +28,12 @@ const profileRouter = require("./routes/profilePage");
 app.use(cors());
 app.use(logger("dev"));
 // app.use(express.json());
+
+// parse requests of content-type - application/json
+app.use(bodyParser.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
   console.log(req.originalUrl);
