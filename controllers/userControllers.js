@@ -7,16 +7,46 @@ const allUsers = (req, res, next) => {
     .catch(next);
 };
 
-const oneUser = (req, res, next) => {
+const oneUser = async (req, res, next) => {
   const { id } = req.params;
   const user = {
     text: "SELECT * FROM users WHERE id = $1",
     values: [id],
   };
-  db.query(user)
+  await db
+    .query(user)
     .then((data) => res.status(200).json(data.rows))
     .catch(next);
 };
+
+// const oneUser = async (req, res, next) => {
+//   const { id } = req.params;
+//   const user = {
+//     text: `
+//   SELECT
+//     id,
+//     first_name,
+//     last_name,
+//     image_user,
+//     type,
+//     business_name,
+//     email,
+//     password,
+//     phone_number,
+//     address,
+//     city,
+//     state,
+//     country,
+//     about,
+//     FROM users
+//     WHERE id=$1`,
+//     values: [id],
+//   };
+//   await db
+//     .query(user)
+//     .then((data) => res.status(200).json(data.rows))
+//     .catch(next);
+// };
 
 const createUser = (req, res, next) => {
   const {
@@ -107,6 +137,54 @@ const editUser = (req, res, next) => {
     .catch(next);
 };
 
+const listMyServices = async (req, res, next) => {
+  const { id } = req.params;
+  const getMyServices = {
+    text: `
+      SELECT 
+      u.id,
+      s.id,
+         
+          s.title,
+          s.image,
+          s.image_2,
+          s.image_3,
+          s.image_4,
+          s.category,
+          s.price,
+          s.description
+      FROM users AS u
+      JOIN services AS s
+      ON s.user_id = u.id
+      WHERE u.id = $1
+      `,
+    values: [id],
+  };
+
+  //   try {
+  //     const { rows: getMyServices } = await db.query(getMyServices);
+  //     console.log("whadup" + rows);
+
+  //     const result = {
+  //       ...getMyServices["0"],
+  //     };
+  //     res.json(result);
+  //   } catch (e) {
+  //     res.status(500).send(e.message);
+  //   }
+  // };
+
+  await db
+    .query(getMyServices)
+    .then((data) => {
+      // console.log("stringify" + JSON.stringify(data));
+      // console.log("stringify WITH ROWS" + JSON.stringify(data.rows));
+
+      res.status(201).json(data.rows);
+    })
+    .catch(next);
+};
+
 const deleteUser = (req, res, next) => {
   const { id } = req.params;
   const deleteUser = {
@@ -134,5 +212,6 @@ module.exports = {
   oneUser,
   createUser,
   editUser,
+  listMyServices,
   deleteUser,
 };

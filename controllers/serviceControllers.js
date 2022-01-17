@@ -156,6 +156,23 @@ const similarServices = (req, res, next) => {
     .catch(next);
 };
 
+// const listMyServices = async (req, res, next) => {
+//   const { user_id } = req.params;
+//   const getMyServices = {
+//     text: `
+//       SELECT * FROM services
+//       WHERE user_id = $1
+
+//       `,
+//     values: [user_id],
+//   };
+
+//   await db
+//     .query(getMyServices)
+//     .then((data) => res.status(201).json(data.rows))
+//     .catch(next);
+// };
+
 const deleteService = (req, res, next) => {
   const { id } = req.params;
   const deleteService = {
@@ -182,5 +199,6 @@ module.exports = {
   createService,
   editService,
   similarServices,
+  // listMyServices,
   deleteService,
 };

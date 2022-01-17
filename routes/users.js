@@ -6,12 +6,15 @@ const {
   oneUser,
   createUser,
   editUser,
+  listMyServices,
   deleteUser,
 } = require("../controllers/userControllers");
 
 usersRouter.get("/", allUsers);
 
 usersRouter.get("/:id", oneUser);
+
+usersRouter.get("/list/:id", listMyServices);
 
 usersRouter.post("/", createUser);
 

@@ -7,6 +7,7 @@ const {
   createService,
   editService,
   similarServices,
+  // listMyServices,
   deleteService,
 } = require("../controllers/serviceControllers");
 
@@ -19,6 +20,8 @@ servicesRouter.post("/", createService);
 servicesRouter.put("/:id", editService);
 
 servicesRouter.get("/related/:id/:category", similarServices);
+
+// servicesRouter.get("/list/:id", listMyServices);
 
 servicesRouter.delete("/:id", deleteService);
 

@@ -1,7 +1,13 @@
 const multer = require("multer");
 const path = require("path");
 
-const uploadFolder = path.resolve("public", "emailAttachments");
+const uploadFolder = path.resolve(
+  "public",
+  "emailAttachments",
+  "images",
+  "service_images",
+  "user_images"
+);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -17,7 +23,7 @@ const storage = multer.diskStorage({
 });
 
 // Option 2: check the mimetype and the file extension (better)
-const isPicture = ({ originalname, mimetype }) => {
+const isAllowed = ({ originalname, mimetype }) => {
   const allowedMimeTypes = [
     "image/png",
     "image/jpg",
@@ -34,14 +40,18 @@ const isPicture = ({ originalname, mimetype }) => {
   );
 };
 
+const limits = {
+  fileSize: 100000000,
+};
+
 const fileFilter = (req, file, cb) => {
-  if (!isPicture(file)) {
-    req.fileValidationError = "Only image files are allowed!";
-    return cb(new Error("Only image files are allowed!"), false);
+  if (!isAllowed(file)) {
+    req.fileValidationError = "Invalid File!";
+    return cb(new Error("Invalid File!"), false);
   }
   cb(null, true);
 };
 
-const upload = multer({ storage, fileFilter });
+const upload = multer({ storage, fileFilter, limits });
 
 module.exports = upload;
