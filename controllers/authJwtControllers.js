@@ -4,6 +4,16 @@ const privateKey = process.env.APP_SECRET_KEY;
 
 const upload = require("../utils/fileUploader");
 
+// const { Pool } = require("pg");
+
+// const pool = new Pool({
+// PGUSER: "ytkyxyzs",
+// PGHOST:"ella.db.elephantsql.com",
+// PGPASSWORD: "1DhWozUeWyN_KaWMbZXEeqr1-1qx5QFw",
+// PGDATABASE: "ytkyxyzs",
+// PGPORT=5432
+// });
+
 // const express = require("express");
 const db = require("../database/db");
 const bcrypt = require("bcrypt");
@@ -25,6 +35,8 @@ const createUser = async (req, res, next) => {
     country,
     about,
   } = req.body;
+
+  console.log("here is checking at line 32 " + first_name);
 
   // const { file, fileValidationError } = req;
   // if (!file) return res.status(400).send("Please upload a file");
@@ -49,11 +61,43 @@ const createUser = async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
 
     const bcryptPassword = await bcrypt.hash(password, salt);
+    console.log(
+      "here is checking at line 56 " + JSON.stringify(bcryptPassword)
+    );
+
+    //   pool.query(
+    //     "INSERT INTO users (first_name, last_name, image_user, type, business_name, email, password, phone_number, address, city, state, country, about)
+    // VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
+    // RETURNING *",
+    // [
+    //   first_name,
+    //   last_name,
+    //   image_user,
+    //   type,
+    //   business_name,
+    //   email,
+    //   bcryptPassword,
+    //   phone_number,
+    //   address,
+    //   city,
+    //   state,
+    //   country,
+    //   about,
+    // ])
+    //     (err, res) => {
+    //       console.log(err, res);
+
+    //       pool.end();
+    //       const token = jwt.sign(newUser.values[5], privateKey);
+    //       console.log("here is checking at line 106 " + token);
+    //       return res.status(201).json({ token });
+    //     }
+    //   );
 
     const newUser = {
       text: `INSERT INTO users (first_name, last_name, image_user, type, business_name, email, password, phone_number, address, city, state, country, about)
-          VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
-          RETURNING *
+      VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
+      RETURNING *
           `,
       values: [
         first_name,
@@ -71,12 +115,11 @@ const createUser = async (req, res, next) => {
         about,
       ],
     };
+    console.log("here is checking at line 79 " + JSON.stringify(newUser));
 
     await db
       .query(newUser)
       .then((data) => {
-        // console.log(data);
-
         // THIS
         // const token = jwtGenerator(newUser.rows[0].id);
         // return res.status(201).json({ token });
@@ -86,12 +129,15 @@ const createUser = async (req, res, next) => {
         // return res.status(201).json({ token });
 
         //  OR THIS*
-        const usertoken = jwt.sign(newUser.values[5], privateKey);
-        return res.status(201).json({ token: usertoken });
+        // const usertoken = jwt.sign(newUser.values[5], privateKey);
+        // return res.status(201).json({ token: usertoken });
 
         // OR THIS
-        // const token = jwt.sign(newUser.values[5], privateKey);
-        // return res.status(201).json({ token });
+        // console.log("here is checking at line 99 ");
+        console.log("here is checking at line 84 " + JSON.stringify(data));
+        const token = jwt.sign(newUser.values[5], privateKey);
+        console.log("here is checking at line 106 " + token);
+        return res.status(201).json({ token });
 
         // OR THIS
         // const usertoken = jwt.sign(newUser.values[5], privateKey, {
