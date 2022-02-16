@@ -14,7 +14,7 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const fs = require("fs");
 const db = require("./database/db");
-const upload = require("./utils/fileUploader");
+const { upload } = require("./utils/fileUploader");
 
 const servicesRouter = require("./routes/services");
 const usersRouter = require("./routes/users");
@@ -24,6 +24,8 @@ const { contactRouter } = require("./routes/contact");
 const webhookRouter = require("./routes/webhook_server");
 const authRouter = require("./routes/authJwt");
 const profileRouter = require("./routes/profilePage");
+const uploadRouter = require("./routes/uploadFile");
+const categoryRouter = require("./routes/category");
 
 app.use(cors());
 app.use(logger("dev"));
@@ -57,11 +59,17 @@ app.use("/checkout", checkoutRouter);
 app.use("/payment", webhookRouter);
 app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
+app.use("/category", categoryRouter);
 
 app.use("/contact", upload.single("file"), contactRouter);
+// app.use("/file", upload.single("file"), uploadRouter);
 
 app.get("/", (req, res, next) => {
   res.json("welcome to mvp_finpro");
+});
+
+app.get("/health", (req, res) => {
+  res.sendStatus(200);
 });
 
 // catch 404 and forward to error handler

@@ -9,10 +9,7 @@ const pass = process.env.NODE_MAILER_PASS;
 
 const contactEmail = nodemailer.createTransport({
   service: "gmail",
-  // auth: {
-  //   user: "mvp.finpro@gmail.com",
-  //   pass: "Mvpfinpro10",
-  // },
+
   auth: {
     user: user,
     pass: pass,
@@ -42,7 +39,7 @@ contactRouter.post("/seller", (req, res) => {
     buyerEmail,
     sellerEmail,
   });
-  console.log(req.file);
+  // console.log(req.file);
   const mail = {
     from: name,
     to: sellerEmail,

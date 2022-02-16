@@ -1,5 +1,4 @@
 const express = require("express");
-const db = require("../database/db");
 const servicesRouter = express.Router();
 const {
   allServices,
@@ -15,7 +14,7 @@ servicesRouter.get("/", allServices);
 
 servicesRouter.get("/:id", oneService);
 
-servicesRouter.post("/", createService);
+servicesRouter.post("/create", createService);
 
 servicesRouter.put("/:id", editService);
 

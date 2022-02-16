@@ -2,19 +2,16 @@ const multer = require("multer");
 const path = require("path");
 
 // const upload2 = multer({ dest: "images/user_images" });
-
-const uploadFolder = path.resolve("public", "emailAttachments");
 // const uploadFolder2 = path.resolve(
 //   "public",
-//   "fotosTrial",
 //   "images",
 //   "user_images",
 //   "service_images"
 // );
 
-const storage = multer.diskStorage({
+const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadFolder);
+    cb(null, "fotosTrial");
   },
   filename: (req, file, cb) => {
     cb(
@@ -25,19 +22,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// const storage2 = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, uploadFolder2);
-//   },
-//   filename: (req, file, cb) => {
-//     cb(
-//       null,
-//       `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}` // will give something like: profile_pic-1624546714574.png
-//       // or something simpler like: `${Date.now()}-${file.originalname}` // will give something like: 1624546714574-myOriginalImage_name.jpg
-//     );
-//   },
-// });
-
 // Option 2: check the mimetype and the file extension (better)
 const isAllowed = ({ originalname, mimetype }) => {
   const allowedMimeTypes = [
@@ -45,14 +29,10 @@ const isAllowed = ({ originalname, mimetype }) => {
     "image/jpg",
     "image/jpeg",
     "image/gif",
-    "audio/mpeg",
-    "video/mp4,",
-    "application/pdf",
   ];
   return (
-    originalname.match(
-      /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF|mpeg|MPEG|mp4|MP4|pdf|PDF)$/
-    ) && allowedMimeTypes.includes(mimetype)
+    originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/) &&
+    allowedMimeTypes.includes(mimetype)
   );
 };
 
@@ -68,10 +48,8 @@ const fileFilter = (req, file, cb) => {
   cb(null, true);
 };
 
-const upload = multer({ storage, fileFilter, limits });
-// const upload2 = multer({ storage2, fileFilter, limits });
+const upload2 = multer({ storage: multerStorage, fileFilter, limits });
 
 module.exports = {
-  upload,
-  // upload2,
+  upload2,
 };

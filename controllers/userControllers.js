@@ -1,5 +1,7 @@
 const express = require("express");
 const db = require("../database/db");
+const multer = require("multer");
+// const { upload } = require("../utils/fileUploader");
 
 const allUsers = (req, res, next) => {
   db.query(`SELECT * FROM users ORDER BY id ASC`)
@@ -52,17 +54,17 @@ const createUser = (req, res, next) => {
   const {
     first_name,
     last_name,
-    image_user,
-    type,
-    business_name,
+    // image_user,
+    // type,
+    // business_name,
     email,
     password,
-    phone_number,
-    address,
-    city,
-    state,
-    country,
-    about,
+    // phone_number,
+    // address,
+    // city,
+    // state,
+    // country,
+    // about,
   } = req.body;
 
   const newUser = {
@@ -73,17 +75,17 @@ const createUser = (req, res, next) => {
     values: [
       first_name,
       last_name,
-      image_user,
-      type,
-      business_name,
+      // image_user,
+      // type,
+      // business_name,
       email,
       password,
-      phone_number,
-      address,
-      city,
-      state,
-      country,
-      about,
+      // phone_number,
+      // address,
+      // city,
+      // state,
+      // country,
+      // about,
     ],
   };
   db.query(newUser)
@@ -91,11 +93,43 @@ const createUser = (req, res, next) => {
     .catch(next);
 };
 
+// const uploadImage = (req, res, next) => {
+//   const { image_user } = req.body;
+//   const { id } = req.params;
+
+//   const imagePath = req.file.path;
+
+//   const { file, fileValidationError } = req;
+//   if (!file) return res.status(400).send("Please upload a file");
+//   if (fileValidationError) return res.status(400).send(fileValidationError);
+
+//   upload2(req, res, function (err) {
+//     if (err instanceof multer.MulterError) {
+//       return res.status(500).json(err);
+//     } else if (err) {
+//       return res.status(500).json(err);
+//     }
+//     return res.status(200).send(imagePath);
+//     // return res.status(200).send(req.file);
+//   });
+
+//   const uploadProfileImage = {
+//     text: `SET image_user=$1
+//     WHERE id=$2
+//     RETURNING *`,
+//     VALUES: [image_user, id],
+//   };
+
+//   db.query(uploadProfileImage)
+//     .then((data) => res.status(201).json(data.rows))
+//     .catch(next);
+// };
+
 const editUser = (req, res, next) => {
   const {
     first_name,
     last_name,
-    image_user,
+    // image_user,
     type,
     business_name,
     email,
@@ -108,17 +142,25 @@ const editUser = (req, res, next) => {
     about,
   } = req.body;
   const { id } = req.params;
+  console.log("gaga " + first_name);
+
   const updateUser = {
     text: `
         UPDATE users
-        SET first_name=$1, last_name=$2, image_user=$3, type=$4, business_name=$5, email=$6, password=$7, phone_number=$8, address=$9, city=$10, state=$11, country=$12, about=$13
-        WHERE id=$14
+         SET first_name=$1, last_name=$2, type=$3, business_name=$4, email=$5, password=$6, phone_number=$7, address=$8, city=$9, state=$10, country=$11, about=$12
+        WHERE id=$13
         RETURNING *
         `,
+    // text: `
+    //     UPDATE users
+    //     // SET first_name=$1, last_name=$2, image_user=$3, type=$4, business_name=$5, email=$6, password=$7, phone_number=$8, address=$9, city=$10, state=$11, country=$12, about=$13
+    //     WHERE id=$14
+    //     RETURNING *
+    //     `,
     values: [
       first_name,
       last_name,
-      image_user,
+      // image_user,
       type,
       business_name,
       email,
@@ -212,6 +254,7 @@ module.exports = {
   oneUser,
   createUser,
   editUser,
+  // uploadImage,
   listMyServices,
   deleteUser,
 };
